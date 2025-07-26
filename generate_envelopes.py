@@ -2,15 +2,40 @@ import csv
 from reportlab.lib.units import inch
 from reportlab.pdfgen import canvas
 from reportlab.lib.utils import ImageReader
+from usps import USPSApi, Address
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
+USPS_USER_ID = os.getenv("USPS_USER_ID")  # Make sure to set this in your .env file
+RETURN_ADDRESS_STREET = os.getenv("RETURN_ADDRESS_STREET")
+RETURN_ADDRESS_CITY_STATE_ZIP = os.getenv("RETURN_ADDRESS_CITY_STATE_ZIP")
+
+def verify_address_with_usps(address_dict):
+    address = Address(
+        name=f"{address_dict['FirstName']} {address_dict['LastName']}",
+        address_1=address_dict['Address1'],
+        address_2=address_dict['Address2'],
+        city=address_dict['City'],
+        state=address_dict['State'],
+        zipcode=address_dict['PostalCode'][:5]
+    )
+    usps = USPSApi(USPS_USER_ID, test=False)
+    try:
+        response = usps.validate_address(address)
+        return not response.result.get("Error")
+    except Exception as e:
+        print(f"[⚠️] USPS address verification failed: {e}")
+        return False
 
 # Define #10 envelope size: 9.5" x 4.125"
 envelope_width = 9.5 * inch
 envelope_height = 4.125 * inch
 
 RETURN_ADDRESS_LINES = [
-    "DungeonWizard",
-    "6834 N SMITH ST",
-    "PORTLAND OR 97203-2541"
+    USPS_USER_ID,
+    RETURN_ADDRESS_STREET,
+    RETURN_ADDRESS_CITY_STATE_ZIP
 ]
 
 RETURN_ADDRESS_FONT = "Helvetica"
@@ -64,7 +89,7 @@ def draw_envelope(c, first_name, last_name, address1, address2, city, state, pos
     ]
     if address2.strip():
         address_lines.append(address2)
-    address_lines.append(f"{city.upper()}, {state.upper()} {postal_code}")
+    address_lines.append(f"{city.upper()} {state.upper()} {postal_code}")
 
     # Calculate total height of text block
     total_height = len(address_lines) * line_height
