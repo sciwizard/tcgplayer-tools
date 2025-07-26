@@ -38,15 +38,15 @@ RETURN_ADDRESS_LINES = [
     RETURN_ADDRESS_CITY_STATE_ZIP
 ]
 
-RETURN_ADDRESS_FONT = "Helvetica"
-RETURN_ADDRESS_SIZE = 12
-RETURN_ADDRESS_LINE_HEIGHT = 12
-RETURN_ADDRESS_X = 20  # points from left edge
+RETURN_ADDRESS_FONT = "Trebuchet MS"
+RETURN_ADDRESS_SIZE = 14
+RETURN_ADDRESS_LINE_HEIGHT = 14
+RETURN_ADDRESS_X = 10  # points from left edge
 RETURN_ADDRESS_Y_START = 270  # points from top (297 - 275 = 22 pts margin)
 
 # Optional image next to return address
 LOGO_PATH = "evil-wizard-logo.png"  # replace with your image path
-LOGO_SIZE = 28  # height in points; image will scale to match this
+LOGO_SIZE = 32  # height in points; image will scale to match this
 
 def draw_envelope(c, first_name, last_name, address1, address2, city, state, postal_code):
     line_height = 14
