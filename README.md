@@ -49,6 +49,9 @@ RETURN_ADDRESS_CITY_STATE_ZIP="your return city state zip"
 
 3. **Prepare a CSV file** with this format:
 
+Go to TCGPlayer seller portal, select all orders, then click "Export Shipping". This outputs a CSV shipping info in
+this format:
+
 ```csv
 FirstName,LastName,Address1,Address2,City,State,PostalCode
 Jane,Doe,123 Main St,,Springfield,IL,62704
@@ -70,15 +73,7 @@ This will create `envelopes.pdf` (default path: `~/Documents/envelopes.pdf`) wit
 To customize the sender/return address and logo:
 
 - Open `generate_envelopes.py`
-- Modify the `RETURN_ADDRESS_LINES` list to match your branding:
-
-```python
-RETURN_ADDRESS_LINES = [
-    "DungeonWizard",
-    "6834 N SMITH ST",
-    "PORTLAND OR 97203-2541"
-]
-```
+- Create your own .env file like above and set your return address to match your address:
 
 - Replace the image at `LOGO_PATH` with your own logo:
 
